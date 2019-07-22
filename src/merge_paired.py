@@ -1,4 +1,5 @@
 import os
+import subprocess
 from seq_paired import Seq_paired
 
 
@@ -23,17 +24,23 @@ class Merge_paired():
 
                 file_name_r1 = folder_name+'/'+ category_name[n] + "_" + forward.split('_')[0] + ".R1.fastq"
                 file_name_r2 = folder_name+'/'+ category_name[n] + "_" + forward.split('_')[0] + ".R2.fastq"
-                wt_r1 = open(file_name_r1, 'w')
-                wt_r2 = open(file_name_r2, 'w')
-                list_files.append(file_name_r1)
-                for line in r1:
-                    wt_r1.write(line+'\n')
+                with open(file_name_r1, 'w') as wt_r1, open(file_name_r2, 'w') as wt_r2:
+                    list_files.append(file_name_r1)
+                    for line in r1:
+                        wt_r1.write(line+'\n')
 
-                for line in r2:
-                    wt_r2.write(line + '\n')
-                
-        #run pandaseq to merge
-        print(len(list_files))
-        #command = ["pandaseq","-f", ,"-r", ]
+                    for line in r2:
+                        wt_r2.write(line + '\n')
 
-        #read sequence back
+                # run pandaseq to merge
+                file_name_out = folder_name+'/'+ category_name[n] + "_" + forward.split('_')[0] + ".merged.fastq"
+                command = ["/mnt/home/choiji22/software/pandaseq-2.11/pandaseq","-F","-f",file_name_r1,"-r",file_name_r2,"-w",file_name_out]
+                print(' '.join(command))
+
+                try:
+                    proc = subprocess.call(command) 
+                except:
+                    print("pandaseq error")
+                    
+
+
