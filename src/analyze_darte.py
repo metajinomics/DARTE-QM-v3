@@ -1,4 +1,4 @@
-
+import os
 import sys
 import argparse
 
@@ -26,16 +26,26 @@ def main():
     split = split_gene()
     category_objects, category_name, category_num = split(args.forward, args.reverse, args.gene_list, args.primer)
     tot = 0
+    folder = args.forward.split('_')[0]
+    os.mkdir(folder)
     for obj in category_objects:
+        print(obj.get_name())
         r1, r2 = obj.get()
+        if len(r1) > 1:
+            fwrite = open(folder+'/'+obj.get_name()+"_R1_001.fastq",'w')
+            rwrite = open(folder+'/'+obj.get_name()+"_R1_001.fastq",'w')
+            fwrite.write('\n'.join(r1))
+            rwrite.write('\n'.join(r2))
+            fwrite.close()
+            rwrite.close()
         tot = tot + len(r1)
 
     print(tot)
 
 
     # step 2 : merge, pandaseq?
-    merge = Merge_paired()
-    merged = merge(category_objects, category_name, category_num, args.forward)
+    #merge = Merge_paired()
+    #merged = merge(category_objects, category_name, category_num, args.forward)
 
     # step 3 : cluster OTU, cd-hit?
 
