@@ -41,6 +41,10 @@ class split_gene():
         tmp_seq_r1 = []
         tmp_seq_r2 = []
         category_objects = [Seq_paired() for i in range(len(category_name))]
+        
+        for i, one_name in enumerate(category_name):
+            category_objects[i].add_name(one_name)
+
 
         print(len(category_objects))
 

@@ -3,6 +3,7 @@ class Seq_paired(object):
     def __init__(self):
         self.r1 = []
         self.r2 = []
+        self.name = ""
 
     def __call__(self):
         ""
@@ -17,3 +18,9 @@ class Seq_paired(object):
 
     def get(self):
         return self.r1, self.r2
+
+    def add_name(self, new_name):
+        self.name = new_name
+
+    def get_name(self):
+        return self.name
